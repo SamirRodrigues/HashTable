@@ -29,7 +29,7 @@ struct Account
 	AcctKey getKey(void) const;
 	
 	/// Stream extractor of the account information. 
-	friend std::ostream &operator<< ( std::ostream & os_, const Account & acct_ );
+	friend std::ostream &operator<< ( std::ostream & _os, const Account & _acct );
 };
 
 /// Compare two accounts

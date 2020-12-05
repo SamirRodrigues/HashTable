@@ -20,7 +20,6 @@ Account::AcctKey Account::getKey(void) const
 
 std::ostream& operator<< ( std::ostream & os_, const Account::AcctKey & ak_ )
 {
-    
     return os_ << "K{"
                << std::get<0>( ak_ ) << ","
                << std::get<1>( ak_ ) << ","

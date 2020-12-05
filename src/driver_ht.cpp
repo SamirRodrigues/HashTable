@@ -8,7 +8,7 @@
 #include "../include/hashtbl.h"
 #include "../include/account.h"
 
-using namespace ac;
+using namespace MyHashTable;
 
 //=== DRIVER CODE
 

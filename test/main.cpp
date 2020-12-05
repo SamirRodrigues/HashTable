@@ -163,6 +163,7 @@ TEST_F(HTTest, AtLHS)
         ht_accounts.at(e.getKey()) = x;
     }
     ASSERT_EQ( curr_size, ht_accounts.size() );
+
     i=10;
     // Check the table if the changes took place.
     for( auto & e : m_accounts )
