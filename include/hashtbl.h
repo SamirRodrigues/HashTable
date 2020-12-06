@@ -26,7 +26,7 @@ namespace MyHashTable {
 
     };
 
-    template< class KeyType, class DataType >
+    template< class KeyType, class DataType, typename KeyHash = std::hash<KeyType>, typename KeyEqual = std::equal_to<KeyType> >
     class HashTbl
     {
         public:

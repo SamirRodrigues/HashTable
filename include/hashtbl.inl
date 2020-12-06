@@ -72,7 +72,7 @@ namespace MyHashTable
         m_size = other.size();
         //m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(m_size));
         m_data_table = new std::list< entry_type >[m_size];
-        for(int i = 0; i < other.m_size; i++){
+        for(size_t i = 0; i < other.m_size; i++){
             auto list = other.listCol(i);
             for(auto entry : list){
                 this->insert(entry.m_key, entry.m_data);
@@ -100,7 +100,7 @@ namespace MyHashTable
         //m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(m_size));
         m_data_table = new std::list< entry_type >[m_size];
         
-        for(int i = 0; i < other.m_size; i++){
+        for(size_t i = 0; i < other.m_size; i++){
             auto list = other.listCol(i);
             for(auto entry : list){
                 this->insert(entry.m_key, entry.m_data);
