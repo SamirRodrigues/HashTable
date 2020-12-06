@@ -536,7 +536,7 @@ TEST_F(HTTest, Count)
         auto result = htable.insert( e.first, e.second );
         ASSERT_TRUE( result ); // We must NOT found the key
     }
-
+    
     // Let us compare the number of elements hashed to the same bucket.
     for ( const auto &e: set1 )
         ASSERT_EQ( set1.size(), htable.count(e.first) );

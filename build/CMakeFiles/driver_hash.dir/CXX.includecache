@@ -36,6 +36,10 @@ algorithm
 account.h
 /mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/account.h
 
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/src/account.cpp
+../include/account.h
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/account.h
+
 /mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/src/driver_ht.cpp
 iostream
 -

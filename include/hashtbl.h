@@ -18,13 +18,16 @@ namespace MyHashTable {
             DataType m_data;// A informacao.
 
             HashEntry( KeyType kt_, DataType dt_ ) : m_key(kt_), m_data(dt_)
-            {/*Empty*/}
+            {}
 
-            DataType getData(){ return m_data; }
+            DataType getData();/*
+            { 
+                return m_data; 
+                }*/
 
-            bool operator==(HashEntry<KeyType, DataType> other){        
+            bool operator==(HashEntry<KeyType, DataType> other);/*{        
                 return this->m_key == other.m_key ? true : false;
-            }
+            }*/
 
             friend std::ostream& operator<<(std::ostream& os, const HashEntry<KeyType, DataType> entry_type)
             {
@@ -37,22 +40,22 @@ namespace MyHashTable {
     class HashTbl
     {
         public:
-            // Aliases
-            using entry_type = HashEntry<KeyType,DataType>;
-            using list_type = list< entry_type >;
-            using size_type = size_t;
+            
+            using Entry = HashEntry<KeyType,DataType>;
 
             explicit HashTbl( size_t tbl_size_ = DEFAULT_SIZE ){
             
-                m_data_table = new list< entry_type >[tbl_size_];
+                m_data_table = new list< Entry >[tbl_size_];
                 m_size = tbl_size_;
                 m_count = 0;
             
             }
-            HashTbl( const HashTbl& other){
+
+
+            HashTbl( const HashTbl& other);/*{
                 
                 m_size = other.size();
-                m_data_table = new std::list< entry_type >[m_size];
+                m_data_table = new std::list< Entry >[m_size];
                 
                 for(size_t i = 0; i < other.m_size; i++){
 
@@ -63,10 +66,11 @@ namespace MyHashTable {
                     }
                 
                 }
-            }
-            HashTbl( initializer_list< entry_type > ilist){
+
+            }*/
+            HashTbl( initializer_list< Entry > ilist);/*{
                 
-                m_data_table = new std::list< entry_type >[DEFAULT_SIZE];
+                m_data_table = new std::list< Entry >[DEFAULT_SIZE];
                 m_size = DEFAULT_SIZE;
                 m_count = 0;
                 
@@ -76,12 +80,12 @@ namespace MyHashTable {
                 
                 }
             
-            }
-            HashTbl& operator=( const HashTbl& other){
+            }*/
+            HashTbl& operator=( const HashTbl& other);/*{
                 
                 m_size = other.m_size;
                 
-                m_data_table = new std::list< entry_type >[m_size];
+                m_data_table = new std::list< Entry >[m_size];
                 
                 for(size_t i = 0; i < other.m_size; i++){
                     
@@ -94,11 +98,11 @@ namespace MyHashTable {
                 }
                 return *this;
 
-            }
-            HashTbl& operator=( initializer_list< entry_type > ilist){
+            }*/
+            HashTbl& operator=( initializer_list< Entry > ilist);/*{
             
                 m_size = DEFAULT_SIZE;
-                m_data_table = new std::list< entry_type >[m_size];
+                m_data_table = new std::list< Entry >[m_size];
                 m_count = 0;
 
                 for(auto entry : ilist){
@@ -109,16 +113,16 @@ namespace MyHashTable {
                 
                 return *this;
             
-            }
+            }*/
 
-            virtual ~HashTbl(){
+            virtual ~HashTbl();/*{
 
                 this->clear();
                 delete[] m_data_table;
             
-            }            
+            }            */
 
-            bool insert( const KeyType & k_, const DataType & d_ ){   
+            bool insert( const KeyType & k_, const DataType & d_ );/*{   
                 
                 KeyHash HashFunc;
                 KeyEqual EqualFunc;
@@ -151,8 +155,8 @@ namespace MyHashTable {
                 
                 return newInsert;
 
-            }
-            bool retrieve( const KeyType & k_, DataType & d_) const{
+            }*/
+            bool retrieve( const KeyType & k_, DataType & d_) const;/*{
                 
                 KeyHash HashFunc;
                 KeyEqual EqualFunc;
@@ -178,8 +182,8 @@ namespace MyHashTable {
                 
                 return found;
             
-            }
-            bool erase( const KeyType & key){   
+            }*/
+            bool erase( const KeyType & key);/*{   
                 
                 KeyHash HashFunc;
                 KeyEqual EqualFunc;
@@ -197,7 +201,7 @@ namespace MyHashTable {
 
                         m_count--;
                         removed = true;
-                        m_data_table[end].remove(entry_type(item.m_key, item.m_data));
+                        m_data_table[end].remove(Entry(item.m_key, item.m_data));
                         break;
                     
                     }
@@ -206,8 +210,8 @@ namespace MyHashTable {
 
                 return removed;
             
-            }
-            void clear(){
+            }*/
+            void clear();/*{
                 
                 for(size_t i = 0; i < this->m_size; i++){
                 
@@ -217,18 +221,18 @@ namespace MyHashTable {
                 
                 m_count = 0;
 
-            }
-            bool empty() const{
+            }*/
+            bool empty() const;/*{
                 
                 return m_count == 0;
             
-            }
-            inline size_type size() const{
+            }*/
+            inline size_t size() const;/*{
                 
                 return m_count;
             
-            }
-            DataType& at( const KeyType& k_){
+            }*/
+            DataType& at( const KeyType& k_);/*{
                 
                 KeyHash HashFunc;
                 KeyEqual EqualFunc;
@@ -252,8 +256,8 @@ namespace MyHashTable {
 
                 throw std::out_of_range("KEY NOT FOUND");
 
-            }
-            DataType& operator[]( const KeyType& k_)
+            }*/
+            DataType& operator[]( const KeyType& k_);/*
             {   
                 KeyHash HashFunc;
                 KeyEqual EqualFunc;
@@ -281,26 +285,31 @@ namespace MyHashTable {
                 
                 return this->at(k_);
                 
-            }
-            size_type count( const KeyType& key) const
+            }*/
+            size_t count( const KeyType& k_) const;/*
             {   
-                size_t count{0};
+                
+                //size_t count = 0;
 
-                KeyHash hasher;
-                int end = hasher(key);
+                KeyHash HashFunc;
+                int end = HashFunc(k_);
                 end = end%this->m_size;
-
+                
+                
                 for(auto item : m_data_table[end])
                 {
 
                     count++;
                 
                 }
+                return count;
                 
 
-                return count;
+                return m_data_table[end].size();
 
-            }
+            }*/
+            
+            
             friend ostream & operator<<( ostream & o_, const HashTbl & table_ )
             {
                 
@@ -326,7 +335,7 @@ namespace MyHashTable {
 
         private:
             //=== Private methods
-            void rehash(){        //!< Change Hash table size if load factor >1.0
+            void rehash();/*{        //!< Change Hash table size if load factor >1.0
                 
                 HashTbl<KeyType, DataType> newHashTbl(this->m_size*2);
                 
@@ -346,13 +355,13 @@ namespace MyHashTable {
                 
                 this->m_count = newHashTbl.m_count;
             
-            }
+            }*/
             //=== Private memnbers
         
             unsigned int m_size;  //!< Tamanho da tabela.
             unsigned int m_count; //!< Numero de elementos na tabel. 
-            list< entry_type > *m_data_table; //!< Tabela de listas para entradas de tabela.
-            // std::unique_ptr< std::forward_list< entry_type > [] > m_data_table;
+            list< Entry > *m_data_table; //!< Tabela de listas para entradas de tabela.
+            // std::unique_ptr< std::forward_list< Entry > [] > m_data_table;
             static const short DEFAULT_SIZE = 11;
     };
 
