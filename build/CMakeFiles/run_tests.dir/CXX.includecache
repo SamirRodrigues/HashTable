@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/mnt/d/GitHub/HashTable/include/account.h
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/account.h
 iostream
 -
 functional
@@ -14,17 +14,17 @@ functional
 tuple
 -
 
-/mnt/d/GitHub/HashTable/include/hashtbl.h
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/hashtbl.h
 iostream
 -
 list
 -
 account.h
-/mnt/d/GitHub/HashTable/include/account.h
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/account.h
 hashtbl.inl
-/mnt/d/GitHub/HashTable/include/hashtbl.inl
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/hashtbl.inl
 
-/mnt/d/GitHub/HashTable/include/hashtbl.inl
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/hashtbl.inl
 iostream
 -
 list
@@ -34,9 +34,9 @@ memory
 algorithm
 -
 account.h
-/mnt/d/GitHub/HashTable/include/account.h
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/account.h
 
-/mnt/d/GitHub/HashTable/test/main.cpp
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/test/main.cpp
 iterator
 -
 functional
@@ -48,9 +48,9 @@ array
 map
 -
 gtest/gtest.h
-/mnt/d/GitHub/HashTable/test/gtest/gtest.h
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/test/gtest/gtest.h
 ../include/hashtbl.h
-/mnt/d/GitHub/HashTable/include/hashtbl.h
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/hashtbl.h
 ../include/account.h
-/mnt/d/GitHub/HashTable/include/account.h
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/account.h
 

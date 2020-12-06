@@ -33,7 +33,7 @@ namespace MyHashTable {
             }
     };
 
-    template< typename KeyType, typename DataType/*, typename KeyHash = std::hash<KeyType>, typename KeyEqual = std::equal_to<KeyType> */>
+    template< typename KeyType, typename DataType>
     class HashTbl
     {
         public:
@@ -43,240 +43,309 @@ namespace MyHashTable {
             using size_type = size_t;
 
             explicit HashTbl( size_t tbl_size_ = DEFAULT_SIZE ){
-                //m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(tbl_size));
+            
                 m_data_table = new list< entry_type >[tbl_size_];
-                //m_size = find_prime(tbl_size_);
                 m_size = tbl_size_;
                 m_count = 0;
+            
             }
             HashTbl( const HashTbl& other){
+                
                 m_size = other.size();
-                //m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(m_size));
                 m_data_table = new std::list< entry_type >[m_size];
+                
                 for(size_t i = 0; i < other.m_size; i++){
-                    auto list = other.listCol(i);
-                    for(auto entry : list){
+
+                    for(auto entry : other.m_data_table[i]){
+                
                         this->insert(entry.m_key, entry.m_data);
+                
                     }
+                
                 }
             }
             HashTbl( initializer_list< entry_type > ilist){
-                //m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(DEFAULT_SIZE));
+                
                 m_data_table = new std::list< entry_type >[DEFAULT_SIZE];
                 m_size = DEFAULT_SIZE;
                 m_count = 0;
+                
                 for(auto entry : ilist){
+
                     this->insert(entry.m_key, entry.m_data);
+                
                 }
+            
             }
             HashTbl& operator=( const HashTbl& other){
+                
                 m_size = other.m_size;
                 
-                //m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(m_size));
                 m_data_table = new std::list< entry_type >[m_size];
                 
                 for(size_t i = 0; i < other.m_size; i++){
-                    auto list = other.listCol(i);
-                    for(auto entry : list){
+                    
+                    for(auto entry : other.m_data_table[i]){
+                
                         this->insert(entry.m_key, entry.m_data);
+                
                     }
+                
                 }
                 return *this;
+
             }
             HashTbl& operator=( initializer_list< entry_type > ilist){
-                //m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(DEFAULT_SIZE));
-                m_data_table = new std::list< entry_type >[m_size];
+            
                 m_size = DEFAULT_SIZE;
+                m_data_table = new std::list< entry_type >[m_size];
                 m_count = 0;
+
                 for(auto entry : ilist){
+                
                     this->insert(entry.m_key, entry.m_data);
+                
                 }
+                
                 return *this;
+            
             }
 
             virtual ~HashTbl(){
+
                 this->clear();
-                //std::unique_ptr does not require deletion
+                delete[] m_data_table;
+            
             }            
 
-            bool insert( const KeyType & key, const DataType & data ){   
-                KeyHash hashFunc;
-                KeyEqual equalFunc;
+            bool insert( const KeyType & k_, const DataType & d_ ){   
+                
+                KeyHash HashFunc;
+                KeyEqual EqualFunc;
 
-                bool newInsertion = true;
-                int end = hashFunc(key);
+                bool newInsert = true;
+
+                int end = HashFunc(k_);
                 end = end% this->m_size;
-                for(auto item : m_data_table[end]){
-                    //finds repeated key
-                    if(equalFunc(item.m_key, key)){
-                        //replaces it
-                        newInsertion = false;
-                        replace(m_data_table[end].begin(), m_data_table[end].end(), item, HashEntry<KeyType, DataType>(key, data));
+                
+                for(auto item : m_data_table[end])
+                {
+
+                    if(EqualFunc(item.m_key, k_))
+                    {
+
+                        newInsert = false;
+                        replace(m_data_table[end].begin(), m_data_table[end].end(), item, HashEntry<KeyType, DataType>(k_, d_));
                         break;
+                    
                     }
-                }
-                if(newInsertion){
-                    //not repeated? create new entry
-                    m_data_table[end].push_back(HashEntry<KeyType, DataType>(key, data));
-                    m_count++;
+
                 }
                 
-                return newInsertion;
+                if(newInsert){
+
+                    m_data_table[end].push_back(HashEntry<KeyType, DataType>(k_, d_));
+                    m_count++;
+
+                }
+                
+                return newInsert;
+
             }
             bool retrieve( const KeyType & k_, DataType & d_) const{
-                KeyHash hashFunc;
-                KeyEqual equalFunc;
+                
+                KeyHash HashFunc;
+                KeyEqual EqualFunc;
 
-                //finds a key and stores the associated value in d_
-                int end = hashFunc(k_);
+                int end = HashFunc(k_);
                 end = end%this->m_size;
+                
                 bool found = false;
-                for(auto item : m_data_table[end]){
-                    //finds repeated key
-                    if(equalFunc(item.m_key, k_)){
-                        //updates it
+                
+                for(auto item : m_data_table[end])
+                {
+
+                    if(EqualFunc(item.m_key, k_))
+                    {
+
                         found = true;
                         d_ = item.m_data;
                         break;
+                    
                     }
+
                 }
+                
                 return found;
+            
             }
             bool erase( const KeyType & key){   
-                KeyHash hashFunc;
-                KeyEqual equalFunc;
+                
+                KeyHash HashFunc;
+                KeyEqual EqualFunc;
 
                 bool removed = false;
-                int end = hashFunc(key);
-                end = end%this->m_size;
-                int i{0};
-                for(auto item : m_data_table[end]){
-                    //finds repeated key
-                    if(equalFunc(item.m_key, key)){
-                        //removes it
+                
+                int end = HashFunc(key);
+                end = end % this->m_size;
+
+                for(auto item : m_data_table[end])
+                {
+
+                    if(EqualFunc(item.m_key, key))
+                    {
+
                         m_count--;
                         removed = true;
                         m_data_table[end].remove(entry_type(item.m_key, item.m_data));
                         break;
+                    
                     }
-                    i++;
+
                 }
+
                 return removed;
+            
             }
             void clear(){
-                for(size_t i{0}; i < this->m_size; i++){
+                
+                for(size_t i = 0; i < this->m_size; i++){
+                
                     m_data_table[i].clear();
+                
                 }
+                
                 m_count = 0;
+
             }
             bool empty() const{
+                
                 return m_count == 0;
+            
             }
             inline size_type size() const{
+                
                 return m_count;
+            
             }
             DataType& at( const KeyType& k_){
-                KeyHash hashFunc;
-                KeyEqual equalFunc;
+                
+                KeyHash HashFunc;
+                KeyEqual EqualFunc;
 
-                //finds a key and returns a reference to it
-                int end = hashFunc(k_);
+                int end = HashFunc(k_);
                 end = end%this->m_size;
-                bool found = false;
-                auto itr = listCol(end).begin();
+                
+                auto itr = m_data_table[end].begin();
+                
                 for(auto item : m_data_table[end]){
-                    //finds repeated key
-                    if(equalFunc(item.m_key, k_)){
-                        //returns the data
-                        found = true;
+
+                    if(EqualFunc(item.m_key, k_)){
+
                         return (*itr).m_data;
+                
                     }
+                
                     itr++;
+                
                 }
-                if(not found){
-                    throw std::out_of_range("KEY UNFOUND");
-                }
-                else{
-                    std::cout<<"\nWell, this really should not happen, call the author\n";
-                    return(*itr).m_data;
-                }
+
+                throw std::out_of_range("KEY NOT FOUND");
+
             }
             DataType& operator[]( const KeyType& k_)
             {   
-                KeyHash hashFunc;
-                KeyEqual equalFunc;
+                KeyHash HashFunc;
+                KeyEqual EqualFunc;
 
-                int end =  hashFunc(k_);
+                int end =  HashFunc(k_);
                 end = end%this->m_size;
-                int i{0};
-                bool found = false;
-                for(auto item : listCol(end)){
-                    if(equalFunc(item.m_key, k_)){
-                        found = true;
-                        break;
+                
+                auto itr = m_data_table[end].begin();
+
+                for(auto item : m_data_table[end]){
+                    
+                    if(EqualFunc(item.m_key, k_)){
+                    
+                        return (*itr).m_data;
+                    
                     }
-                    i++;
+
+                    itr++;
+                
                 }
-                auto list = listCol(end);
-                if(not found){
-                    DataType n = DataType();
-                    this->insert(k_, n);
-                    return this->at(k_);
-                }
-                else{
-                    auto itr = listCol(end).begin();
-                    while(i > 0 ){
-                        itr++;
-                        i--;
-                    }
-                    return (*itr).m_data;
-                }
+  
+                DataType n = DataType();
+                
+                this->insert(k_, n);
+                
+                return this->at(k_);
                 
             }
             size_type count( const KeyType& key) const
             {   
                 size_t count{0};
 
-                for(auto item : m_data_table[key])
+                KeyHash hasher;
+                int end = hasher(key);
+                end = end%this->m_size;
+
+                for(auto item : m_data_table[end])
                 {
+
                     count++;
+                
                 }
+                
 
                 return count;
+
             }
-            void print();
-            friend ostream & operator<<( ostream & os_, const HashTbl & ht_ )
+            friend ostream & operator<<( ostream & o_, const HashTbl & table_ )
             {
-                for(size_t i{0}; i < ht_.m_size; i++)
+                
+                for(size_t i = 0; i < table_.m_size; i++)
                 {
-                    os_<<"TABLE "<<i<<": ";
-                    
-                    auto list = ht_.listCol(i);
 
-                    for(auto item : list){ os_ << item<<"; "; }
+                    o_ << "Table " << i << ": ";
 
-                    os_<<"\n";
+                    for(auto item : table_.m_data_table[i])
+                    { 
+                        
+                        o_ << item<<";\n \t"; 
+                        
+                    }
+
+                    o_ << "\n";
+                
                 }
-                return os_;
+
+                return o_;
+
             }
-            list< entry_type > & listCol(const int & idx) const{
-                return m_data_table[idx];
-            }
-            
 
         private:
             //=== Private methods
             void rehash(){        //!< Change Hash table size if load factor >1.0
-                HashTbl<KeyType, DataType> biggerHashTbl(this->m_size*2);
-                for(int i{0}; i < this->m_size; i++){
-                    auto list = this->listCol(i);
-                    for(auto item : list){
-                        biggerHashTbl.insert(item.m_key, item.m_data);
+                
+                HashTbl<KeyType, DataType> newHashTbl(this->m_size*2);
+                
+                for(size_t i = 0; i < this->m_size; i++){
+
+                    for(auto item : m_data_table[i]){
+                
+                        newHashTbl.insert(item.m_key, item.m_data);
+                
                     }
+                
                 }
-                this->m_data_table = biggerHashTbl.m_data_table;
-                this->m_size = biggerHashTbl.m_size;
-                this->m_count = biggerHashTbl.m_count;
+                
+                this->m_data_table = newHashTbl.m_data_table;
+                
+                this->m_size = newHashTbl.m_size;
+                
+                this->m_count = newHashTbl.m_count;
+            
             }
             //=== Private memnbers
         
