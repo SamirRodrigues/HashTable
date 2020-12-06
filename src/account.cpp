@@ -54,7 +54,11 @@ std::size_t KeyHash::operator()( const Account::AcctKey & _k ) const
         std::hash< int >()(std::get<2>( _k )) xor
         std::hash< int >()(std::get<3>( _k ));
 }
-
+std::size_t KeyHash::operator()( const std::pair< std::string, int > & k_ ) const
+{
+    return std::hash < std::string >{}( k_.first ) xor
+            std::hash < int >{}( k_.second ) ;
+}
 
 // Functor that test two keys for equality.
 bool KeyEqual::operator()( const Account::AcctKey & _lhs, const Account::AcctKey & _rhs ) const
@@ -63,4 +67,8 @@ bool KeyEqual::operator()( const Account::AcctKey & _lhs, const Account::AcctKey
         std::get<1>(_lhs) == std::get<1>(_rhs) and
         std::get<2>(_lhs) == std::get<2>(_rhs) and
         std::get<3>(_lhs) == std::get<3>(_rhs);
+}
+
+bool KeyEqual::operator()( const std::pair <std::string, int> & lhs_,  const std::pair <std::string, int> & rhs_) const{
+    return lhs_.first == rhs_.first and lhs_.second == rhs_.second;
 }

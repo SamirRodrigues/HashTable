@@ -19,6 +19,8 @@ iostream
 -
 list
 -
+account.h
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/account.h
 hashtbl.inl
 /mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/hashtbl.inl
 
@@ -32,6 +34,10 @@ memory
 algorithm
 -
 account.h
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/account.h
+
+/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/src/account.cpp
+../include/account.h
 /mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include/account.h
 
 /mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/test/main.cpp

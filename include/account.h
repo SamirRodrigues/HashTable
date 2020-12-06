@@ -39,6 +39,11 @@ bool operator==( const Account & a, const Account & b );
 struct KeyHash
 {
     std::size_t operator()( const Account::AcctKey & ) const;
+	std::size_t operator()( const std::pair <std::string, int> & ) const;
+	template <typename T>
+	std::size_t operator()( const T & k_) const{
+		return std::hash < T >{}( k_ ) ;
+	}
 };
 
 
@@ -46,6 +51,11 @@ struct KeyHash
 struct KeyEqual
 {
 	bool operator()( const Account::AcctKey & , const Account::AcctKey & ) const;
+	bool operator()( const std::pair <std::string, int> &,  const std::pair <std::string, int> &) const;
+	template <typename T>
+	bool operator()( const T & _lhs, const T & _rhs) const{
+		return _lhs == _rhs;
+	}
 };
 
 #endif

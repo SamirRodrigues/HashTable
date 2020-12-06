@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <list> // forward_list
+#include "account.h"
 
 using namespace std;
 
@@ -32,7 +33,7 @@ namespace MyHashTable {
             }
     };
 
-    template< class KeyType, class DataType, typename KeyHash = std::hash<KeyType>, typename KeyEqual = std::equal_to<KeyType> >
+    template< typename KeyType, typename DataType/*, typename KeyHash = std::hash<KeyType>, typename KeyEqual = std::equal_to<KeyType> */>
     class HashTbl
     {
         public:
