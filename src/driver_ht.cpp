@@ -33,7 +33,7 @@ int main()
     std::cout << std::endl;
 
     // Cria uma tabela de dispersao com capacidade p 23 elementos
-    HashTbl< Account::AcctKey, Account, KeyHash, KeyEqual > contas( 4 );
+    HashTbl< Account::AcctKey, Account/*, KeyHash, KeyEqual */> contas( 4 );
 
     // Inserindo as contas na tabela hash.
     for( auto & e : myAccounts )
@@ -98,7 +98,7 @@ int main()
     {
         // Testando rehash.
         // Cria uma tabela de dispersao com capacidade p 23 elementos
-        HashTbl< Account::AcctKey, Account, KeyHash, KeyEqual > contas( 2 );
+        HashTbl< Account::AcctKey, Account/*, KeyHash, KeyEqual */> contas( 2 );
 
         // Inserindo as contas na tabela hash.
         for( auto & e : myAccounts )

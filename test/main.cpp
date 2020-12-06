@@ -20,7 +20,7 @@ class HTTest : public ::testing::Test {
     Account target; //!< Target account to search for.
 
     /// This is the hash table we use in the tests.
-    ac::HashTbl< Account::AcctKey, Account, KeyHash, KeyEqual > ht_accounts{ 4 };
+    MyHashTable::HashTbl< Account::AcctKey, Account/*, KeyHash, KeyEqual */> ht_accounts{ 4 };
 
     protected:
     void SetUp() override
@@ -119,7 +119,7 @@ TEST_F(HTTest, OperatorSquareBraketsLHS2)
     // count the number of occurrences of each word
     // (the first call to operator[] initialized the counter with zero)
     std::map<std::string, size_t> expected;
-    ac::HashTbl<std::string, size_t>  word_map;
+    MyHashTable::HashTbl<std::string, size_t>  word_map;
     for (const auto &w : { "this", "sentence", "is", "not", "a", "sentence",
                            "this", "sentence", "is", "a", "hoax"})
     {
@@ -179,7 +179,7 @@ TEST_F(HTTest, AtLHS2)
     // count the number of occurrences of each word
     // (the first call to operator[] initialized the counter with zero)
     std::map<std::string, size_t> expected;
-    ac::HashTbl<std::string, size_t>  word_map;
+    MyHashTable::HashTbl<std::string, size_t>  word_map;
     for (const auto &w : { "this", "sentence", "is", "not", "a", "sentence",
                            "this", "sentence", "is", "a", "hoax"})
     {
@@ -210,7 +210,7 @@ TEST_F(HTTest, AtException)
 {
     // count the number of occurrences of each word
     // (the first call to operator[] initialized the counter with zero)
-    ac::HashTbl<std::string, size_t>  word_map;
+    MyHashTable::HashTbl<std::string, size_t>  word_map;
     for (const auto &w : { "this", "sentence", "is", "not", "a", "sentence",
                            "this", "sentence", "is", "a", "hoax"})
     {
@@ -236,12 +236,12 @@ TEST_F(HTTest, CopyConstructor)
         ++expected[w];
     }
     // Make this hash have the same elements as the map.
-    ac::HashTbl<std::string, size_t>  word_map;
+    MyHashTable::HashTbl<std::string, size_t>  word_map;
     for( const auto &e : expected )
         word_map.insert( e.first, e.second );
 
     // Create a copy
-    ac::HashTbl<std::string, size_t>  copy( word_map );
+    MyHashTable::HashTbl<std::string, size_t>  copy( word_map );
 
     // Make sure they have the same elements with the same information.
     for( const auto &e : expected )
@@ -258,7 +258,7 @@ TEST_F(HTTest, CopyConstructor)
 
 TEST_F(HTTest, ConstructorInitializer)
 {
-    ac::HashTbl<char, int> htables {{'a', 27}, {'b', 3}, {'c', 1}};
+    MyHashTable::HashTbl<char, int> htables {{'a', 27}, {'b', 3}, {'c', 1}};
     std::map<char, int> expected {{'a', 27}, {'b', 3}, {'c', 1}};
 
     // Make sure they have the same elements with the same information.
@@ -275,8 +275,8 @@ TEST_F(HTTest, ConstructorInitializer)
 
 TEST_F(HTTest, AssignmentOperator)
 {
-    ac::HashTbl<char, int> htable {{'a', 27}, {'b', 3}, {'c', 1}};
-    ac::HashTbl<char, int> htable_copy;
+    MyHashTable::HashTbl<char, int> htable {{'a', 27}, {'b', 3}, {'c', 1}};
+    MyHashTable::HashTbl<char, int> htable_copy;
     std::map<char, int> expected {{'a', 27}, {'b', 3}, {'c', 1}};
 
     // Make sure they are different
@@ -305,7 +305,7 @@ TEST_F(HTTest, AssignmentOperator)
 
 TEST_F(HTTest, AssignmentInitializer)
 {
-    ac::HashTbl<char, int> htable {{'x', 27}, {'y', 3}, {'w', 1}};
+    MyHashTable::HashTbl<char, int> htable {{'x', 27}, {'y', 3}, {'w', 1}};
     std::map<char, int> expected {{'a', 27}, {'b', 3}, {'c', 1}};
 
     // Make sure they are different
@@ -330,7 +330,7 @@ TEST_F(HTTest, AssignmentInitializer)
 
 TEST_F(HTTest, Insert)
 {
-    ac::HashTbl<char, int> htable( 3 );
+    MyHashTable::HashTbl<char, int> htable( 3 );
     std::map<char, int> expected {{'x', 27}, {'y', 3}, {'w', 1}, {'a', 21}, {'b', 6}, {'c', 11}};
 
     ASSERT_TRUE( htable.empty() );
@@ -354,7 +354,7 @@ TEST_F(HTTest, Insert)
 
 TEST_F(HTTest, InsertExisting)
 {
-    ac::HashTbl<char, int> htable {{'x', 2}, {'y', 1}, {'w', 4}, {'a', 5}, {'b', 8}, {'c', 7}};
+    MyHashTable::HashTbl<char, int> htable {{'x', 2}, {'y', 1}, {'w', 4}, {'a', 5}, {'b', 8}, {'c', 7}};
     std::map<char, int> expected {{'x', 27}, {'y', 3}, {'w', 1}, {'a', 21}, {'b', 6}, {'c', 11}};
 
     // Make sure the two hash tables store different values.
@@ -388,7 +388,7 @@ TEST_F(HTTest, InsertExisting)
 
 TEST_F(HTTest, Retrieve)
 {
-    ac::HashTbl<char, int> htable{{'x', 27}, {'y', 3}, {'w', 1}, {'a', 21}, {'b', 6}, {'c', 11}};
+    MyHashTable::HashTbl<char, int> htable{{'x', 27}, {'y', 3}, {'w', 1}, {'a', 21}, {'b', 6}, {'c', 11}};
     std::map<char, int> expected {{'x', 27}, {'y', 3}, {'w', 1}, {'a', 21}, {'b', 6}, {'c', 11}};
     std::map<char, int> unexpected {{'s', 27}, {'e', 3}, {'g', 1}, {'q', 21}, {'i', 6}, {'j', 11}};
 
@@ -411,7 +411,7 @@ TEST_F(HTTest, Retrieve)
 
 TEST_F(HTTest, EraseExisting)
 {
-    ac::HashTbl<char, int> htable {{'x', 2}, {'y', 1}, {'w', 4}, {'a', 5}, {'b', 8}, {'c', 7}};
+    MyHashTable::HashTbl<char, int> htable {{'x', 2}, {'y', 1}, {'w', 4}, {'a', 5}, {'b', 8}, {'c', 7}};
     std::map<char, int> expected {{'x', 2}, {'y', 1}, {'w', 4}, {'a', 5}, {'b', 8}, {'c', 7}};
 
     // Make sure the two hash tables store different values.
@@ -435,7 +435,7 @@ TEST_F(HTTest, EraseExisting)
 
 TEST_F(HTTest, EraseNonExisting)
 {
-    ac::HashTbl<char, int> htable {{'x', 2}, {'y', 1}, {'w', 4}, {'a', 5}, {'b', 8}, {'c', 7}};
+    MyHashTable::HashTbl<char, int> htable {{'x', 2}, {'y', 1}, {'w', 4}, {'a', 5}, {'b', 8}, {'c', 7}};
     std::map<char, int> expected {{'x', 2}, {'y', 1}, {'w', 4}, {'a', 5}, {'b', 8}, {'c', 7}};
     std::map<char, int> unexpected {{'s', 27}, {'e', 3}, {'g', 1}, {'q', 21}, {'i', 6}, {'j', 11}};
 
@@ -460,7 +460,7 @@ TEST_F(HTTest, EraseNonExisting)
 
 TEST_F(HTTest, Clear)
 {
-    ac::HashTbl<char, int> htable {{'x', 2}, {'y', 1}, {'w', 4}, {'a', 5}, {'b', 8}, {'c', 7}};
+    MyHashTable::HashTbl<char, int> htable {{'x', 2}, {'y', 1}, {'w', 4}, {'a', 5}, {'b', 8}, {'c', 7}};
 
     auto curr_size = htable.size();
     ASSERT_FALSE( htable.empty() );
@@ -474,7 +474,7 @@ TEST_F(HTTest, Clear)
 
 TEST_F(HTTest, Rehash)
 {
-    ac::HashTbl<char, int> htable (2);
+    MyHashTable::HashTbl<char, int> htable (2);
     std::map<char, int> set1 {{'x', 2}, {'y', 1}, {'w', 4}, {'a', 5}, {'b', 8}, {'c', 7}};
     std::map<char, int> set2 {{'s', 27}, {'e', 3}, {'g', 1}, {'q', 21}, {'i', 6}, {'j', 11}};
 
@@ -514,7 +514,7 @@ TEST_F(HTTest, Rehash)
 
 TEST_F(HTTest, Count)
 {
-    ac::HashTbl<int, std::string> htable (9);
+    MyHashTable::HashTbl<int, std::string> htable (9);
     std::map<int, std::string> set1 {{11, "eleven"}, {2*11, "twenty two"}, {3*11, "thirty three"}, {4*11, "fourty four"} };
     std::map<int, std::string> set2 {{5, "five"}, {2*11+5, "twnety seven"}, {3*11+5, "thirty eight"}};
     std::map<int, std::string> set3 {{2, "seven"}, {2*11+2, "twenty four"}};

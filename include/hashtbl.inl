@@ -50,16 +50,18 @@ namespace MyHashTable
  
     
    // ======================== HASH TBL ======================== //
-    template <class KeyType, class DataType>
-    HashTbl< KeyType, DataType >::HashTbl(size_t tbl_size = DEFAULT_SIZE){
-        m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(tbl_size));
-        m_size = find_prime(tbl_size);
-        m_count = 0;
-    };
+    /*template <class KeyType, class DataType>
+    HashTbl< KeyType, DataType >::HashTbl(size_t tbl_size_ = DEFAULT_SIZE){
+        //m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(tbl_size));
+                m_data_table = new std::forward_list< entry_type >[tbl_size_];
+                //m_size = find_prime(tbl_size_);
+                m_size = tbl_size_;
+                m_count = 0;
+    }*/
 
     
     template <class KeyType, class DataType>
-    HashTbl<>::~HashTbl(){
+    HashTbl< KeyType, DataType >::~HashTbl(){
         this->clear();
         //std::unique_ptr does not require deletion
     }
@@ -68,7 +70,8 @@ namespace MyHashTable
     template <class KeyType, class DataType>
     HashTbl<KeyType,DataType>::HashTbl(const HashTbl<KeyType, DataType>& other){
         m_size = other.size();
-        m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(m_size));
+        //m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(m_size));
+        m_data_table = new std::list< entry_type >[m_size];
         for(int i = 0; i < other.m_size; i++){
             auto list = other.listCol(i);
             for(auto entry : list){
@@ -79,8 +82,9 @@ namespace MyHashTable
 
    
     template <class KeyType, class DataType>
-    HashTbl<KeyType,DataType>::HashTbl(std::initializer_list<entry_type> ilist){
-        m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(DEFAULT_SIZE));
+    HashTbl< KeyType,DataType >::HashTbl( std::initializer_list<entry_type> ilist){
+        //m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(DEFAULT_SIZE));
+        m_data_table = new std::list< entry_type >[DEFAULT_SIZE];
         m_size = DEFAULT_SIZE;
         m_count = 0;
         for(auto entry : ilist){
@@ -93,7 +97,9 @@ namespace MyHashTable
     HashTbl<KeyType, DataType>& HashTbl<KeyType,DataType>::operator=(const HashTbl<KeyType, DataType>& other){
         m_size = other.m_size;
         
-        m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(m_size));
+        //m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(m_size));
+        m_data_table = new std::list< entry_type >[m_size];
+        
         for(int i = 0; i < other.m_size; i++){
             auto list = other.listCol(i);
             for(auto entry : list){
@@ -106,7 +112,8 @@ namespace MyHashTable
     
     template <class KeyType, class DataType>
     HashTbl<KeyType, DataType>& HashTbl<KeyType,DataType>::operator= (std::initializer_list<entry_type> ilist){
-        m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(DEFAULT_SIZE));
+        //m_data_table = std::make_unique<std::list<entry_type>[]>(find_prime(DEFAULT_SIZE));
+        m_data_table = new std::list< entry_type >[m_size];
         m_size = DEFAULT_SIZE;
         m_count = 0;
         for(auto entry : ilist){
@@ -120,7 +127,8 @@ namespace MyHashTable
     * \param idx the index of the table needed.
     * @return a reference to the requested line of the table.
     */
-    std::list<entry_type>& listCol(const int& idx)const{
+    template <class KeyType, class DataType>
+    std::list< HashEntry<KeyType,DataType> >& HashTbl<KeyType,DataType>::listCol(const int& idx)const{
         return m_data_table[idx];
     }
 
@@ -131,12 +139,13 @@ namespace MyHashTable
     * \param ilist the list being copied.
     * @return reference to the datatype associetade to given key.
     */
-    DataType& operator[](const KeyType& k_)
+    template< class KeyType, class DataType >
+    DataType& HashTbl<KeyType,DataType>::operator[](const KeyType& k_)
     {   
         KeyHash hashFunc;
         KeyEqual equalFunc;
 
-        int end = hashFunc(k_);
+        int end =  hashFunc(k_);
         end = end%this->m_size;
         int i{0};
         bool found = false;
@@ -168,7 +177,8 @@ namespace MyHashTable
     * Returns the ammount of items stored in the table.
     * @return an unsigned int storing the count of items.
     */
-    size_t size() const{
+    template <class KeyType, class DataType>
+    size_t HashTbl< KeyType, DataType >::size() const{
         return m_count;
     }
 
@@ -176,13 +186,13 @@ namespace MyHashTable
     * Receives a key and ifnds the table corresponding to it. Then counts the elements in that table and returns it.
     * \param key a key corresponding to the table one wants to count.
     * @return the count of items in the corresponding table.
-    */            
-    size_t count(const KeyType& key)
-    {
+    */         
+    template <class KeyType, class DataType>
+    size_t HashTbl< KeyType, DataType >::count(const KeyType& key) const {
         std::hash<KeyType> hasher;
         int end = hasher(key);
         end = end%this->m_size;
-        int i{0};
+        size_t i{0};
         for(auto item : m_data_table[end]){
             i++;
         }
@@ -196,7 +206,8 @@ namespace MyHashTable
     * \param data the data corresponding to the key.
     * @return true if the element wasn't previously in the table, false if it was replaced.
     */
-    bool insert(const KeyType& key, const DataType& data)
+    template <class KeyType, class DataType>
+    bool HashTbl< KeyType, DataType >::insert(const KeyType& key, const DataType& data)
     {   
         KeyHash hashFunc;
         KeyEqual equalFunc;
@@ -227,7 +238,8 @@ namespace MyHashTable
     * \param key the key to the value.
     * @return true if the element was deleted of the table, false if it was not there.
     */
-    bool erase(const KeyType& key)
+    template <class KeyType, class DataType>
+    bool HashTbl< KeyType, DataType >::erase(const KeyType& key)
     {   
         KeyHash hashFunc;
         KeyEqual equalFunc;
@@ -256,7 +268,8 @@ namespace MyHashTable
     * \param data the data corresponding to the key.
     * @return true if the element was updated, false if it was not found.
     */
-    bool retrieve(const KeyType& k_, DataType& d_)const
+    template <class KeyType, class DataType>
+    bool HashTbl< KeyType, DataType >::retrieve(const KeyType& k_, DataType& d_)const
     {
         KeyHash hashFunc;
         KeyEqual equalFunc;
@@ -280,9 +293,10 @@ namespace MyHashTable
     /*!
     * Deletes all the data stored in the table and resets the counter.
     */
-    void clear()
+    template <class KeyType, class DataType>
+    void HashTbl< KeyType, DataType >::clear()
     {
-        for(int i{0}; i < this->m_size; i++){
+        for(size_t i{0}; i < this->m_size; i++){
             m_data_table[i].clear();
         }
         m_count = 0;
@@ -292,7 +306,8 @@ namespace MyHashTable
     * Checks if no elements are stored.
     * @return true if the count of elements is 0. False in any other situation.
     */
-    bool empty() const{
+    template <class KeyType, class DataType>
+    bool HashTbl< KeyType, DataType >::empty() const{
         return m_count == 0;
     }
 
@@ -301,7 +316,8 @@ namespace MyHashTable
     * \param key the key to the value.
     * @return a reference to the data corresponding to the value.
     */
-    DataType& at(const KeyType& k_)
+    template <class KeyType, class DataType>
+    DataType& HashTbl< KeyType, DataType >::at(const KeyType& k_)
     {
         KeyHash hashFunc;
         KeyEqual equalFunc;
@@ -325,12 +341,13 @@ namespace MyHashTable
         }
         else{
             std::cout<<"\nWell, this really should not happen, call the author\n";
+            return(*itr).m_data;
         }
     }
 
     
-
-    void rehash()
+    template <class KeyType, class DataType>
+    void HashTbl< KeyType, DataType >::rehash()
     {
         HashTbl<KeyType, DataType> biggerHashTbl(this->m_size*2);
         for(int i{0}; i < this->m_size; i++){
@@ -343,9 +360,23 @@ namespace MyHashTable
         this->m_size = biggerHashTbl.m_size;
         this->m_count = biggerHashTbl.m_count;
     }
+    /*
+    template <class KeyType, class DataType>
+    std::ostream & HashTbl< KeyType, DataType >::operator<<( std::ostream & os_, const HashTbl & ht_ )
+    {
+        for(int i{0}; i < ht_.m_size; i++)
+        {
+            os_<<"TABLE "<<i<<": ";
+            
+            auto list = ht_.listCol(i);
 
-  
+            for(auto item : list){ os_ << item<<"; "; }
 
+            os_<<"\n";
+        }
+        return os_;
+    }
+    */
 }
 
 
