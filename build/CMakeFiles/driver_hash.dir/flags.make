@@ -6,5 +6,5 @@ CXX_FLAGS =  -Wall   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/mnt/c/Users/italo/Desktop/Z/GitHub/HashTable/include 
+CXX_INCLUDES = -I/mnt/d/GitHub/HashTable/include 
 

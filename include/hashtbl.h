@@ -233,15 +233,16 @@ namespace MyHashTable {
                 }
                 
             }
-            size_type count( const KeyType& key) const{
-                std::hash<KeyType> hasher;
-                int end = hasher(key);
-                end = end%this->m_size;
-                size_t i{0};
-                for(auto item : m_data_table[end]){
-                    i++;
+            size_type count( const KeyType& key) const
+            {   
+                size_t count{0};
+
+                for(auto item : m_data_table[key])
+                {
+                    count++;
                 }
-                return i;
+
+                return count;
             }
             void print();
             friend ostream & operator<<( ostream & os_, const HashTbl & ht_ )
