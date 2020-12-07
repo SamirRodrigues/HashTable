@@ -388,17 +388,17 @@ namespace MyHashTable
 
             for(auto item : m_data_table[i]){
         
-                newHashTbl.insert(item.m_key, item.m_data);
+                newHashtbl.insert(item.m_key, item.m_data);
         
             }
         
         }
         
-        m_data_table = newHashTbl.m_data_table;
+        m_data_table = newHashtbl.m_data_table;
         
-        m_size = newHashTbl.m_size;
+        m_size = newHashtbl.m_size;
         
-        m_count = newHashTbl.m_count;
+        m_count = newHashtbl.m_count;
 
     }
     /*
