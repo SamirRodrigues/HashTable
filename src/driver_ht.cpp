@@ -105,7 +105,6 @@ int main()
         {
             std::cout << ">>> Size = " << contas.size() << std::endl;
             contas.insert( e.getKey(), e );
-            std::cout << ">>> count = " << contas.count(e.getKey()) << std::endl;
             std::cout << ">>> Inserindo \"" << e.m_name << "\"\n";
             std::cout << ">>> Tabela Hash de Contas depois da insercao: \n" << contas << std::endl;
             // Unit test for insertion
