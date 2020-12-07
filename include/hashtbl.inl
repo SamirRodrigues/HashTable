@@ -7,15 +7,18 @@
 
 namespace MyHashTable
 {
-    /*
+
+/**************************************HashEntry**************************************/ 
+    
     template <typename KeyType, typename DataType>
     std::ostream& operator<<(std::ostream& os, const HashEntry<KeyType, DataType> entry_type)
     {
         os<<entry_type.m_data;
         return os;
     }
-    */
     
+
+
     template <typename KeyType, typename DataType>
     DataType HashEntry<KeyType,DataType>::getData()
     { 
@@ -30,7 +33,7 @@ namespace MyHashTable
     {        
         return this->m_key == other.m_key ? true : false;
     }
-    
+/**************************************HashEntry**************************************/   
     
 /***************************************Hashtbl***************************************/
     
@@ -188,21 +191,10 @@ namespace MyHashTable
     template <typename KeyType, typename DataType>
     size_t HashTbl< KeyType, DataType >::count(const KeyType& k_) const {
         
-        //size_t count = 0;
-
         KeyHash HashFunc;
+        
         int end = HashFunc(k_);
         end = end%this->m_size;
-        
-        /*
-        for(auto item : m_data_table[end])
-        {
-
-            count++;
-        
-        }
-        return count;
-        */
 
         return m_data_table[end].size();
 

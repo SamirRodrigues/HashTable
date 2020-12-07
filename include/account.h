@@ -21,6 +21,7 @@ struct Account
 
     // Nickname for the account key.
     using AcctKey = std::tuple< std::string, int, int, int >;
+		
 
     /// Basic constructor.
     Account( std::string = "<empty>", int = 0, int = 0, int = 0, float = 0.f );
