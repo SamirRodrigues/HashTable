@@ -31,7 +31,7 @@ namespace MyHashTable
     template <typename KeyType, typename DataType>
     bool HashEntry<KeyType,DataType>::operator==(HashEntry<KeyType, DataType> other)
     {        
-        return this->m_key == other.m_key ? true : false;
+        return m_key == other.m_key ? true : false;
     }
 /**************************************HashEntry**************************************/   
     
@@ -51,7 +51,7 @@ namespace MyHashTable
     template <typename KeyType, typename DataType>
     HashTbl< KeyType, DataType >::~HashTbl(){
         
-        this->clear();
+        clear();
 
         delete[] m_data_table;
     
@@ -68,7 +68,7 @@ namespace MyHashTable
 
             for(auto entry : other.m_data_table[i]){
         
-                this->insert(entry.m_key, entry.m_data);
+                insert(entry.m_key, entry.m_data);
         
             }
         
@@ -86,7 +86,7 @@ namespace MyHashTable
         
         for(auto entry : ilist){
 
-            this->insert(entry.m_key, entry.m_data);
+            insert(entry.m_key, entry.m_data);
         
         }
             
@@ -104,7 +104,7 @@ namespace MyHashTable
             
             for(auto entry : other.m_data_table[i]){
         
-                this->insert(entry.m_key, entry.m_data);
+                insert(entry.m_key, entry.m_data);
         
             }
         
@@ -123,7 +123,7 @@ namespace MyHashTable
 
         for(auto entry : ilist){
         
-            this->insert(entry.m_key, entry.m_data);
+            insert(entry.m_key, entry.m_data);
         
         }
         
@@ -146,7 +146,7 @@ namespace MyHashTable
         KeyEqual EqualFunc;
 
         int end =  HashFunc(k_);
-        end = end%this->m_size;
+        end = end % m_size;
         
         auto itr = m_data_table[end].begin();
 
@@ -164,9 +164,9 @@ namespace MyHashTable
 
         DataType n = DataType();
         
-        this->insert(k_, n);
+        insert(k_, n);
         
-        return this->at(k_);
+        return at(k_);
         
     }
 
@@ -194,7 +194,7 @@ namespace MyHashTable
         KeyHash HashFunc;
         
         int end = HashFunc(k_);
-        end = end%this->m_size;
+        end = end % m_size;
 
         return m_data_table[end].size();
 
@@ -217,7 +217,7 @@ namespace MyHashTable
         bool newInsert = true;
 
         int end = HashFunc(k_);
-        end = end% this->m_size;
+        end = end % m_size;
         
         for(auto item : m_data_table[end])
         {
@@ -259,7 +259,7 @@ namespace MyHashTable
         bool removed = false;
         
         int end = HashFunc(key);
-        end = end % this->m_size;
+        end = end % m_size;
 
         for(auto item : m_data_table[end])
         {
@@ -295,7 +295,7 @@ namespace MyHashTable
         KeyEqual EqualFunc;
 
         int end = HashFunc(k_);
-        end = end%this->m_size;
+        end = end % m_size;
         
         bool found = false;
         
@@ -325,7 +325,7 @@ namespace MyHashTable
     void HashTbl< KeyType, DataType >::clear()
     {
 
-        for(size_t i = 0; i < this->m_size; i++){
+        for(size_t i = 0; i < m_size; i++){
         
             m_data_table[i].clear();
         
@@ -359,7 +359,7 @@ namespace MyHashTable
         KeyEqual EqualFunc;
 
         int end = HashFunc(k_);
-        end = end%this->m_size;
+        end = end % m_size;
         
         auto itr = m_data_table[end].begin();
         
@@ -382,9 +382,9 @@ namespace MyHashTable
     void HashTbl< KeyType, DataType >::rehash()
     {
         
-        HashTbl<KeyType, DataType> newHashTbl(this->m_size*2);
+        HashTbl<KeyType, DataType> newHashtbl( m_size * 2 );
                 
-        for(size_t i = 0; i < this->m_size; i++){
+        for(size_t i = 0; i < m_size; i++){
 
             for(auto item : m_data_table[i]){
         
@@ -394,11 +394,11 @@ namespace MyHashTable
         
         }
         
-        this->m_data_table = newHashTbl.m_data_table;
+        m_data_table = newHashTbl.m_data_table;
         
-        this->m_size = newHashTbl.m_size;
+        m_size = newHashTbl.m_size;
         
-        this->m_count = newHashTbl.m_count;
+        m_count = newHashTbl.m_count;
 
     }
     /*
