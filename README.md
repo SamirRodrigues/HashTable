@@ -16,7 +16,7 @@ This project was proposed by professor Selan Rodrigues from UFRN, for EDB1 mater
 4. `cmake --build .` or `make`: triggers the compiling process.
 
 
->> To run with our tests, first follow the compilation step above, then run inside the folder  `cd TAD/build` the command  `./play`.
+>> To run with our tests, first follow the compilation step above, then run inside the folder  `cd TAD/build` the command  `./run_tests`.
 
 # This project is documented in the doxygen style. Possible errors can be found in the statement. If you find them, please contact us.
 
@@ -50,8 +50,10 @@ This project was proposed by professor Selan Rodrigues from UFRN, for EDB1 mater
         >   The overload of the operator<< (HashTbl)                           <
         >   The rehash metod;                                                  <
 
-OBS.: Although, both team members constantly participated in the implementation of all build stages) 
+OBS.: Although, both team members constantly participated in the implementation of all build stages.
 
 5. functions that are not working: 
         size_t count( const KeyType& k_) const;
-            for some unknown reason, the count function did not passed the tests.
+            for some unknown reason, the count function did not passed the tests, but we believe that the implementation is correct.
+
+6. the default constructor and the two overload of the operator<< presented problems when were include in the .inl, so we chose to keep the implementation in .h.

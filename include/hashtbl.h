@@ -12,6 +12,19 @@ namespace MyHashTable {
     template<class KeyType, class DataType>
     class HashEntry
     {
+
+        /**
+         * @brief HashEntry
+         * 
+         * KeyType m_key; 			                         
+         * DataType m_data;								            
+         * HashEntry( KeyType kt_, DataType dt_ );					   
+         * DataType getData();											    
+         * bool operator==(HashEntry<KeyType, DataType> other); 						
+         * friend std::ostream& operator<<(std::ostream& os, const HashEntry<KeyType, DataType> entry_type)		    	
+         * 
+         */
+        
         public:
 
             KeyType m_key;  // Armazena a chave associada a informcao
@@ -38,33 +51,67 @@ namespace MyHashTable {
             
             using Entry = HashEntry<KeyType,DataType>;
 
-            explicit HashTbl( size_t tbl_size_ = DEFAULT_SIZE ){
+            /**
+			 * @brief Constructor
+             * 
+             * explicit HashTbl( size_t tbl_size_ = DEFAULT_SIZE ); 			create a HashTbl 
+			 * HashTbl( const HashTbl& other);									create a HashTbl from another
+			 * HashTbl( initializer_list< Entry > ilist); 					    Create a HashTbl from initializer_list
+			 * virtual ~HashTbl();											    Default destructor
+			 * HashTbl& operator=( const HashTbl& other); 						Copy content from another HashTbl
+			 * HashTbl& operator=( initializer_list< Entry > ilist);		    Copy content from initializer_list	
+			 * 
+			 */
+            
+            /**
+             * @brief Construct a new HashTbl<KeyType,DataType>::HashTbl object
+             * 
+             * @tparam KeyType 
+             * @tparam DataType
+             * @param tbl_size_ 
+             */
+
+            explicit HashTbl( size_t tbl_size_ = DEFAULT_SIZE )                 // create a HashTbl 
+            {
             
                 m_data_table = new list< Entry >[tbl_size_];
                 m_size = tbl_size_;
                 m_count = 0;
             
             }
+            HashTbl( const HashTbl& other);                                     // create a HashTbl from another
+            HashTbl( initializer_list< Entry > ilist);                          // Create a HashTbl from initializer_list
+            HashTbl& operator=( const HashTbl& other);                          // Default destructor
+            HashTbl& operator=( initializer_list< Entry > ilist);               // Copy content from another HashTbl
+            virtual ~HashTbl();                                                 // Copy content from initializer_list
 
-
-            HashTbl( const HashTbl& other);
-            HashTbl( initializer_list< Entry > ilist);
-            HashTbl& operator=( const HashTbl& other);
-            HashTbl& operator=( initializer_list< Entry > ilist);
-
-            virtual ~HashTbl();
-
-            bool insert( const KeyType & k_, const DataType & d_ );
-            bool retrieve( const KeyType & k_, DataType & d_) const;
-            bool erase( const KeyType & key);
-            void clear();
-            bool empty() const;
-            inline size_t size() const;
-            DataType& at( const KeyType& k_);
-            DataType& operator[]( const KeyType& k_);
-            size_t count( const KeyType& k_) const;
+            /**
+			 * @brief Function
+             * 
+             * bool insert( const KeyType & k_, const DataType & d_ );              // inserts the information that is in d_ associated to k_ key.
+             * bool erase( const KeyType & key);                                    // Removes the item from the Table that is associated to the k_ key.
+             * bool retrieve( const KeyType & k_, DataType & d_) const;             // Retrieves the information that is in d_ associated to k_ key.
+             * void clear();                                                        // Clean the table, removing all elements.
+             * bool empty() const;                                                  // Inform if the table is empty.
+             * inline size_t size() const;                                          // Inform the amount of elements from the Table.
+             * DataType& at( const KeyType& k_);                                    // Returns a reference to the data associated with the k_ key.
+             * DataType& operator[]( const KeyType& k_);                            // Returns a reference to the data associated with the k_ key, by overloading the operator[].
+             * size_t count( const KeyType& k_) const;                              // Returns the number of elements in the table that are in the associated collision list the k_ key.
+             * friend ostream & operator<<( ostream & o_, const HashTbl & table_)   // Overload of the debugging method used to generate a representation table text and its elements.
+			 * 
+			 */
             
-            friend ostream & operator<<( ostream & o_, const HashTbl & table_ )
+            bool insert( const KeyType & k_, const DataType & d_ );                 // inserts the information that is in d_ associated to k_ key.
+            bool erase( const KeyType & k_);                                        // Removes the item from the Table that is associated to the k_ key.
+            bool retrieve( const KeyType & k_, DataType & d_) const;                // Retrieves the information that is in d_ associated to k_ key.
+            void clear();                                                           // Clean the table, removing all elements.
+            bool empty() const;                                                     // Inform if the table is empty.
+            inline size_t size() const;                                             // Inform the amount of elements from the Table.
+            DataType& at( const KeyType& k_);                                       // Returns a reference to the data associated with the k_ key.
+            DataType& operator[]( const KeyType& k_);                               // Returns a reference to the data associated with the k_ key, by overloading the operator[].
+            size_t count( const KeyType& k_) const;                                 // Returns the number of elements in the table that are in the associated collision list the k_ key.
+            
+            friend ostream & operator<<( ostream & o_, const HashTbl & table_ )     // Overload of the debugging method used to generate a representation table text and its elements.
             {
                 
                 for(size_t i = 0; i < table_.m_size; i++)
@@ -87,17 +134,38 @@ namespace MyHashTable {
 
             }
 
+        /**
+         * @brief Private:
+         * void rehash();                               Function responsable to increase the size of the table
+         * list< Entry > *m_data_table;  		        Pointer to receive the dynamic allocation of a vector of lists of the table 
+         * unsigned int m_count;		                The amount of elements in the table 
+         * unsigned int m_size;	                        The size of the Hash Table
+         * static const short DEFAULT_SIZE = 11;        The default size for the Hash Table
+         */
+
         private:
             
-            void rehash();
-        
-            unsigned int m_size;  //!< Tamanho da tabela.
-            unsigned int m_count; //!< Numero de elementos na tabel. 
-            list< Entry > *m_data_table; //!< Tabela de listas para entradas de tabela.
-            // std::unique_ptr< std::forward_list< Entry > [] > m_data_table;
-            static const short DEFAULT_SIZE = 11;
+            void rehash();                              //Function responsable to increase the size of the table
+
+            unsigned int m_size;                        //The size of the Hash Table
+            unsigned int m_count;                       //The amount of elements in the table 
+            list< Entry > *m_data_table;                //Pointer to receive the dynamic allocation of a vector of lists of the table 
+    
+            static const short DEFAULT_SIZE = 11;       //The default size for the Hash Table
     };
 
-} // MyHashTable
+}
+
+/**
+ * @file hashtbl.h
+ * @author Samir Rodrigues & Italo Lima (git @SamirRodrigues & @italo-ce)
+ * @brief Hash Table Implementation
+ * @version 0.1
+ * @date 2020-12-06
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
+
 #include "hashtbl.inl"
 #endif

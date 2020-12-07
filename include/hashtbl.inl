@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include <list>
 #include <memory>
@@ -9,16 +8,14 @@ namespace MyHashTable
 {
 
 /**************************************HashEntry**************************************/ 
-    
-    template <typename KeyType, typename DataType>
-    std::ostream& operator<<(std::ostream& os, const HashEntry<KeyType, DataType> entry_type)
-    {
-        os<<entry_type.m_data;
-        return os;
-    }
-    
 
-
+    /**
+	 * @brief getData()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType
+	 * @return DataType
+	 */
     template <typename KeyType, typename DataType>
     DataType HashEntry<KeyType,DataType>::getData()
     { 
@@ -27,26 +24,23 @@ namespace MyHashTable
     
     }
     
-
+    /**
+	 * @brief operator==()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType
+     * @param other
+	 * @return bool 
+	 */
     template <typename KeyType, typename DataType>
     bool HashEntry<KeyType,DataType>::operator==(HashEntry<KeyType, DataType> other)
     {        
         return m_key == other.m_key ? true : false;
     }
+
 /**************************************HashEntry**************************************/   
     
 /***************************************Hashtbl***************************************/
-    
-    /*
-    template <typename KeyType, typename DataType>
-    explicit HashTbl< KeyType, DataType >::HashTbl(size_t tbl_size_ = DEFAULT_SIZE){
-        
-        m_data_table = new list< Entry >[tbl_size_];
-        m_size = tbl_size_;
-        m_count = 0;
-    
-    }
-    */
     
     template <typename KeyType, typename DataType>
     HashTbl< KeyType, DataType >::~HashTbl(){
@@ -57,7 +51,13 @@ namespace MyHashTable
     
     }
     
-   
+    /**
+     * @brief Construct a new HashTbl<KeyType,DataType>::HashTbl object
+     * 
+     * @tparam KeyType 
+     * @tparam DataType
+     * @param other 
+     */
     template <typename KeyType, typename DataType>
     HashTbl<KeyType,DataType>::HashTbl(const HashTbl<KeyType, DataType>& other){
                  
@@ -76,7 +76,13 @@ namespace MyHashTable
 
     }
 
-   
+    /**
+     * @brief Construct a new HashTbl<KeyType,DataType>::HashTbl object
+     * 
+     * @tparam KeyType 
+     * @tparam DataType
+     * @param ilist 
+     */
     template <typename KeyType, typename DataType>
     HashTbl< KeyType,DataType >::HashTbl( std::initializer_list<Entry> ilist){
                
@@ -92,7 +98,14 @@ namespace MyHashTable
             
     }
     
-    
+    /**
+	 * @brief operator=()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType 
+	 * @param other 
+	 * @return HashTbl<KeyType,DataType>& 
+	 */
     template <typename KeyType, typename DataType>
     HashTbl<KeyType, DataType>& HashTbl<KeyType,DataType>::operator=(const HashTbl<KeyType, DataType>& other){
                     
@@ -113,7 +126,14 @@ namespace MyHashTable
 
     }
 
-    
+    /**
+	 * @brief operator=()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType 
+	 * @param ilist 
+	 * @return HashTbl<KeyType,DataType>& 
+	 */
     template <typename KeyType, typename DataType>
     HashTbl<KeyType, DataType>& HashTbl<KeyType,DataType>::operator= (std::initializer_list<Entry> ilist){
         
@@ -131,14 +151,14 @@ namespace MyHashTable
     
     }
     
-    /*!
-    * Square brackets operator works by taking a key and checking if it is already stored.
-    * If the key has never been placed in the table, inserts it and puts the data to be equal to the default constructor of datatype.
-    * If the key is already in the list, it returns a reference to the data associetated to it.
-    * \param ilist the list being copied.
-    * @return reference to the datatype associetade to given key.
-    */
-   
+    /**
+	 * @brief operator[]()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType 
+	 * @param k_ 
+	 * @return HashTbl<KeyType,DataType>& 
+	 */
     template< typename KeyType, typename DataType >
     DataType& HashTbl<KeyType,DataType>::operator[](const KeyType& k_)
     {   
@@ -170,11 +190,14 @@ namespace MyHashTable
         
     }
 
-    /*!
-    * Returns the ammount of items stored in the table.
-    * @return an unsigned int storing the count of items.
-    */
-    
+    /**
+	 * @brief size()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType
+     * @param k_
+	 * @return size_t 
+	 */
     template <typename KeyType, typename DataType>
     size_t HashTbl< KeyType, DataType >::size() const{
                 
@@ -182,12 +205,13 @@ namespace MyHashTable
     
     }
     
-    /*!
-    * Receives a key and ifnds the table corresponding to it. Then counts the elements in that table and returns it.
-    * \param key a key corresponding to the table one wants to count.
-    * @return the count of items in the corresponding table.
-    */         
-    
+    /**
+	 * @brief count()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType
+	 * @return size_t 
+	 */
     template <typename KeyType, typename DataType>
     size_t HashTbl< KeyType, DataType >::count(const KeyType& k_) const {
         
@@ -195,19 +219,19 @@ namespace MyHashTable
         
         int end = HashFunc(k_);
         end = end % m_size;
-
+    
         return m_data_table[end].size();
 
     }
     
-    /*!
-    * Takes a key and its corresponding data and stores it in the table.
-    * If the key is already stored, it replaces the previously stored value.
-    * \param key the key to the value.
-    * \param data the data corresponding to the key.
-    * @return true if the element wasn't previously in the table, false if it was replaced.
-    */
-    
+    /**
+	 * @brief insert()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType
+     * @param k_
+	 * @return bool 
+	 */
     template <typename KeyType, typename DataType>
     bool HashTbl< KeyType, DataType >::insert(const KeyType& k_, const DataType& d_)
     {   
@@ -243,14 +267,16 @@ namespace MyHashTable
         return newInsert;
     }
     
-    /*!
-    * Takes a key and deletes the element associated to it in the table.
-    * \param key the key to the value.
-    * @return true if the element was deleted of the table, false if it was not there.
-    */
-    
+    /**
+	 * @brief erase()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType
+     * @param k_
+	 * @return bool 
+	 */
     template <typename KeyType, typename DataType>
-    bool HashTbl< KeyType, DataType >::erase(const KeyType& key)
+    bool HashTbl< KeyType, DataType >::erase(const KeyType& k_)
     {   
          
         KeyHash HashFunc;
@@ -258,13 +284,13 @@ namespace MyHashTable
 
         bool removed = false;
         
-        int end = HashFunc(key);
+        int end = HashFunc(k_);
         end = end % m_size;
 
         for(auto item : m_data_table[end])
         {
 
-            if(EqualFunc(item.m_key, key))
+            if(EqualFunc(item.m_key, k_))
             {
 
                 m_count--;
@@ -280,13 +306,15 @@ namespace MyHashTable
             
     }
     
-    /*!
-    * Takes a key and corresponding data. It searches for it in the table, and if is found, updates the assigned data by the one passed.
-    * \param key the key to the value.
-    * \param data the data corresponding to the key.
-    * @return true if the element was updated, false if it was not found.
-    */
-    
+    /**
+	 * @brief retrieve()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType
+     * @param k_
+     * @param d_
+	 * @return bool 
+	 */
     template <typename KeyType, typename DataType>
     bool HashTbl< KeyType, DataType >::retrieve(const KeyType& k_, DataType& d_)const
     {
@@ -317,10 +345,12 @@ namespace MyHashTable
             
     }
     
-    /*!
-    * Deletes all the data stored in the table and resets the counter.
-    */
-    
+    /**
+	 * @brief clear()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType 
+	 */
     template <typename KeyType, typename DataType>
     void HashTbl< KeyType, DataType >::clear()
     {
@@ -334,11 +364,14 @@ namespace MyHashTable
         m_count = 0;
     
     }
-    /*!
-    * Checks if no elements are stored.
-    * @return true if the count of elements is 0. False in any other situation.
-    */
-    
+     
+    /**
+     * @brief empty()
+     * 
+     * @tparam KeyType 
+     * @tparam DataType
+     * @return bool 
+     */
     template <typename KeyType, typename DataType>
     bool HashTbl< KeyType, DataType >::empty() const{
                         
@@ -346,12 +379,14 @@ namespace MyHashTable
             
     }
     
-    /*!
-    * Takes a key and finds the data corresponding to it. Throws an exception if it is not found.
-    * \param key the key to the value.
-    * @return a reference to the data corresponding to the value.
-    */
-    
+    /**
+	 * @brief at()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType
+     * @param k_
+	 * @return DataType& 
+	 */
     template <typename KeyType, typename DataType>
     DataType& HashTbl< KeyType, DataType >::at(const KeyType& k_)
     {
@@ -378,6 +413,12 @@ namespace MyHashTable
         throw std::out_of_range("KEY NOT FOUND");
     }
     
+    /**
+	 * @brief rehash()
+	 * 
+     * @tparam KeyType 
+     * @tparam DataType 
+	 */
     template <typename KeyType, typename DataType>
     void HashTbl< KeyType, DataType >::rehash()
     {
@@ -401,28 +442,6 @@ namespace MyHashTable
         m_count = newHashtbl.m_count;
 
     }
-    /*
-    template <typename KeyType, typename DataType>
-    std::ostream & HashTbl< KeyType , DataType >::operator<<( std::ostream & o_, const HashTbl<KeyType, DataType> & table_ )
-    {
-        for(size_t i = 0; i < table_.m_size; i++)
-        {
-
-            o_ << "Table " << i << ": ";
-
-            for(auto item : table_.m_data_table[i])
-            { 
-                
-                o_ << item<<";\n \t"; 
-                
-            }
-
-            o_ << "\n";
-        
-        }
-
-        return o_;
-    }*/
 
 /***************************************Hashtbl***************************************/
 
